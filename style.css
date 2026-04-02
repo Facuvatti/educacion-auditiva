@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+div{
+    display: flex;
+    align-items: center;
+}
+body {
+    font-family: sans-serif;
+    background: #f5f0e8;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+button {
+    margin: 10px;
+}
+input::placeholder {
+  text-align: center;
+}
+label { font-weight: bold; margin-right: 4px; }
+
+select {
+    margin-right: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+/*
+ * PENTAGRAMA HORIZONTAL - NOTAS EN COLUMNA VERTICAL
+ *
+ * Cada li tiene una altura fija (STEP = 18px = semitono).
+ * Las 5 líneas horizontales del pentagrama se dibujan con
+ * un pseudo-elemento absoluto que cubre todo el contenedor.
+ *
+ * Las líneas van en posiciones Y relativas al contenedor:
+ * Se ubican en los semitonos correspondientes a E, G, B, D, F
+ * (líneas del pentagrama en clave de sol).
+ *
+ * Cada nota se desplaza horizontalmente (translateX) según
+ * si cae en línea o en espacio, para quedar centrada.
+ * Pero el posicionamiento vertical real lo da el orden del DOM
+ * (C3 arriba → B3 abajo), y las líneas son decoración.
+ */
+
+/* STEP = 18px por semitono */
+
+#notas {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #fdf8ef;
+    border-radius: 12px;
+    border: 1px solid #d6c9b0;
+    padding: 16px 0;
+    /* ancho fijo para que las líneas tengan referencia */
+    width: 220px;
+}
+
+/*
+ * Las 5 líneas horizontales del pentagrama.
+ * Las notas en una octava van de C a B = 12 semitonos.
+ * El orden en el DOM es: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+ * Cada li = 18px de alto.
+ * Total 12 notas * 18px = 216px de contenido (+ padding).
+ *
+ * En clave de Sol, las líneas del pentagrama corresponden a:
+ *   Línea 1 (arriba) = F  → índice 5  → top: 16 + 5*18 + 9 = 115px
+ *   Línea 2          = D  → índice 3  → top: 16 + 3*18 + 9 = 79px
+ *   Línea 3 (central)= B  → índice 11 → top: 16 + 11*18 + 9 = 223px (B está abajo)
+ *   Línea 4          = G  → índice 7  → top: 16 + 7*18 + 9 = 151px
+ *   Línea 5 (abajo)  = E  → índice 4  → top: 16 + 4*18 + 9 = 97px
+ *
+ * Reordenado de arriba a abajo (índice del DOM, 0=C):
+ *   D  (índice 2) → top: 16 + 2*18 + 9 = 61px
+ *   F  (índice 5) → top: 16 + 5*18 + 9 = 115px
+ *   A  (índice 9) → top: 16 + 9*18 + 9 = 187px  ← ajustado
+ *   -- fuera de rango en una octava simple --
+ *
+ * Nota: usamos 5 líneas equiespaciadas para la estética,
+ * sin mapeo estricto a clave de Sol (eso requeriría JS).
+ * Las líneas se espacian uniformemente cada ~36px (2 semitonos).
+ */
+
+#notas::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 12px;
+    /* 5 líneas horizontales equiespaciadas */
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 35px,
+            #b5a08a 35px,
+            #b5a08a 37px,
+            transparent 37px,
+            transparent 72px,
+            #b5a08a 72px,
+            #b5a08a 74px,
+            transparent 74px,
+            transparent 109px,
+            #b5a08a 109px,
+            #b5a08a 111px,
+            transparent 111px,
+            transparent 148px,
+            #b5a08a 148px,
+            #b5a08a 150px,
+            transparent 150px,
+            transparent 185px,
+            #b5a08a 185px,
+            #b5a08a 187px,
+            transparent 187px
+        );
+    background-position: top 16px left 0;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#notas > li {
+    height: 35px;           /* 1 semitono = 18px */
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Botón base ── */
+#notas > li > button {
+    width: 28px;
+    height: 28px;
+    background-color: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    transition: filter 0.15s;
+    z-index: 2;
+}
+
+/*
+ * POSICIÓN HORIZONTAL de cada nota.
+ * Las notas naturales (en línea o espacio) se alinean al centro.
+ * Los sostenidos (#) se desplazan a la derecha para diferenciarse.
+ *
+ * left: posición X dentro del li.
+ * Usamos una columna base a left:20px y los # a left:80px,
+ * separando visualmente las teclas blancas de las negras.
+ */
+
+/* Notas naturales: columna izquierda */
+#notas > li > button { left: 20px; }
+
+/* Sostenidos: columna derecha */
+#notas > li[id*="#"] > button {
+    background-color: #555;
+}
+
+button#progression {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #4a90d9;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button#progression:hover { background: #2f72b8; }
+
+#notas > li > button:hover { filter: brightness(1.6); }
