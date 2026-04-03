@@ -20,14 +20,16 @@
             <select name="tonalidad">
                 <option>Tonalidad</option>
             </select>
-            <button>Random</button>
-            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-            <input name="tonalidad-random-await" type="text" value="" placeholder="X" size="1">
-            <p style="flex-direction: row; margin: 12px">progresiones</p>
+            <button id="tonalidad-random">Random</button>
             <div>
                 <label for="hide-tonalidad">Adivinar</label>
                 <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
             </div>
+        </div>
+        <div>
+            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
+            <input name="tonalidad-random-await" type="text" value="" placeholder="X" size="1">
+            <p style="flex-direction: row; margin: 12px">progresiones</p>
         </div>
         <div>
             <label for="octava">Octava</label>
@@ -40,14 +42,16 @@
                 <option value="6">6</option>
                 <option value="7">7</option>
             </select>
-            <button>Random</button>
-            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-            <input name="octava-random-await" type="text" value="" placeholder="X" size="1">
-            <p style="flex-direction: row; margin: 12px">progresiones</p>
+            <button id="octava-random">Random</button>
             <div>
                 <label for="hide-tonalidad">Adivinar</label>
                 <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
             </div>
+        </div>
+        <div>
+            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
+            <input name="octava-random-await" type="text" value="" placeholder="X" size="1">
+            <p style="flex-direction: row; margin: 12px">progresiones</p>
         </div>
         <div>
             <label for="notation">Notación</label>
@@ -66,16 +70,17 @@
                 <option value="5">5</option>
             </select>
             <label for="hide-progression">Adivinar</label>
-            <input type="checkbox" name="hide-progression" id="hide-progression" style="margin-right: 12px;">
-            <label for="dificulty">Dificultad</label>
-            <select name="dificulty">
-                <option value="3000">Fácil (3 segundos)</option>
-                <option value="2000" selected>Intermedio (2 segundos)</option>
-                <option value="1000">Difícil (1 segundo)</option>
-            </select>
+            <input type="checkbox" name="hide-progression" id="hide-progression">
         </div>
+        <label for="dificulty">Dificultad</label>
+        <select name="dificulty">
+            <option value="3000">Fácil (3 segundos)</option>
+            <option value="2000" selected>Intermedio (2 segundos)</option>
+            <option value="1000">Difícil (1 segundo)</option>
+        </select>
     </aside>
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
     <script src="main.js"></script>
+    <script src="darkmode.js"></script>
 </body>
 </html>

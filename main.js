@@ -1,106 +1,13 @@
-const root = document.documentElement; // el <html>
-const toggleLabel = document.querySelector("#theme-label");
 
-// Al cargar: respeta lo guardado en localStorage
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) {
-    root.setAttribute("data-theme", savedTheme);
-    updateToggleLabel(savedTheme);
-}
-
-document.querySelector("#theme-toggle").addEventListener("click", () => {
-    // Si ya tiene tema forzado, alternamos; si no, miramos el sistema
-    const currentTheme = root.getAttribute("data-theme");
-    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const isDark = currentTheme === "dark" || (!currentTheme && systemDark);
-    const newTheme = isDark ? "light" : "dark";
-
-    root.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);  // persiste entre sesiones
-    updateToggleLabel(newTheme);
-});
-
-function updateToggleLabel(theme) {
-    toggleLabel.textContent = theme === "dark" ? "☀️ Modo claro" : "🌙 Modo oscuro";
-}
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
-let tags = ["T","","ST","","M","SD","","D","","SPD","","S"];
-tags = [...tags,...tags,...tags];
-let notes_tonalidad = [];
-let pianoInstrument = null;
-const audioContext = new AudioContext();
-const loadingPromise = Soundfont.instrument(audioContext, 'acoustic_grand_piano')
-.then(instrument => {
-    pianoInstrument = instrument;
-});
-async function unlockAudio() {
-  if (audioContext.state === 'suspended') {
-    await audioContext.resume();
-  }
-  // Espera que el instrumento termine de cargar
-  await loadingPromise;
-  console.log('✅ Piano listo');
-  return pianoInstrument;
+function selectRandomOption(selectElement) {
+    const options = selectElement.options;
+    const randomIndex = Math.floor(Math.random() * options.length);
+    selectElement.selectedIndex = randomIndex;
+    selectElement.dispatchEvent(new Event("change"));
 }
-document.body.addEventListener('click', async ()=> {await unlockAudio()}, { once: true })
-
-
-const octava = document.querySelector("select[name='octava']");
-octava.addEventListener("change", () => {
-    notation.dispatchEvent(new Event('change'));
-});
-Soundfont.instrument('piano', 'acoustic_grand_piano').then((instrument) => {
-    
-})
-const notation = document.querySelector("select[name='notation']");
-const ids = ["C","C#", "D","D#", "E", "F","F#", "G","G#", "A","A#", "B"];
-notation.addEventListener("change", () => {
-    let notas;
-    let tonalidad = document.createElement("select");
-    tonalidad.name = "tonalidad";
-    if(notation.value == "Americana") {
-        notas = ids;
-    } else {
-        notas = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La","La#", "Si"];
-    }
-    for(let i = 0; i < 12; i++) {
-        let option = document.createElement("option");
-        option.textContent = notas[i];
-        option.value = ids[i];
-        tonalidad.append(option);
-    }
-    selectTone();
-    document.querySelector("select[name='tonalidad']").replaceWith(tonalidad);
-    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'))
-});
-const tonalidad = document.querySelector("select[name='tonalidad']");
-tonalidad.addEventListener("change", () => {
-    
-});
-const progression = document.querySelector("#progression");
-progression.addEventListener("click", async () => {
-    progression.disabled = true;
-    progression.textContent = "Progresionando";
-    const amount = document.querySelector("select[name='progression-notes']");
-    await delay(1000);
-    for(let i = 0; i < amount.value; i++) {
-        const index = Math.floor(Math.random() * notes_tonalidad.length);
-        const noteChosen = notes_tonalidad[index];
-        const buttonChosen = document.querySelector(`button[id="${noteChosen}"]`);
-        console.log(index, noteChosen, buttonChosen);
-        buttonChosen.dispatchEvent(new Event('click'));
-        buttonChosen.classList.add("active");
-        await delay(document.querySelector("select[name='dificulty']").value);
-        buttonChosen.classList.remove("active");
-    }
-    progression.disabled = false;
-    progression.textContent = "Progresión";
-});
-notation.dispatchEvent(new Event('change'));
-octava.dispatchEvent(new Event('change'));
 function selectTone(){
     notes_tonalidad = [];
     let latinNotation = [];
@@ -110,9 +17,9 @@ function selectTone(){
     
     for(let oct=-1;oct<=1;oct++){
         for(let i = 0; i < 12; i++) {
-            let note = `${ids[i]}${parseInt(octava.value) + oct}`;
+            let note = `${americano[i]}${parseInt(octava.value) + oct}`;
             notes_tonalidad.push(note);
-            let note1 = `${ids[i]}${parseInt(octava.value) + oct}`;
+            let note1 = `${americano[i]}${parseInt(octava.value) + oct}`;
             latinNotation.push(note1);
         }
         
@@ -138,9 +45,133 @@ function selectTone(){
     }
     document.querySelector("#notas").replaceWith(ul);
 }
-document.querySelector("input[name='see-notes']").addEventListener("change", () => {
+async function unlockAudio() {
+  if (audioContext.state === 'suspended') {
+    await audioContext.resume();
+  }
+  // Espera que el instrumento termine de cargar
+  await loadingPromise;
+  console.log('✅ Piano listo');
+  return pianoInstrument;
+}
+let pianoInstrument = null;
+const audioContext = new AudioContext();
+const loadingPromise = Soundfont.instrument(audioContext, 'acoustic_grand_piano')
+.then(instrument => {
+    pianoInstrument = instrument;
+});
+document.body.addEventListener('click', async ()=> {await unlockAudio()}, { once: true })
+Soundfont.instrument('piano', 'acoustic_grand_piano').then((instrument) => {
+})
+
+
+
+const octava = document.querySelector("select[name='octava']");
+octava.addEventListener("change", () => {
+    notation.dispatchEvent(new Event('change'));
+});
+
+
+const notation = document.querySelector("select[name='notation']");
+let americano = ["C","C#", "D","D#", "E", "F","F#", "G","G#", "A","A#","B"];
+let latin = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La","La#", "Si"];
+let tags;
+let notes_tonalidad = [];
+notation.addEventListener("change", () => {
+    let notas;
+    const tonalidad = document.querySelector("select[name='tonalidad']");
+    tonalidad.innerHTML = "";
+    if(notation.value == "Americana") notas = americano;
+    else notas = latin;
+    for(let i = 0; i < 12; i++) {
+        let option = document.createElement("option");
+        option.textContent = notas[i];
+        option.value = americano[i];
+        tonalidad.append(option);
+    }
     selectTone();
+    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'))
+});
+
+
+const tonalidad = document.querySelector("select[name='tonalidad']");
+tonalidad.addEventListener("change", () => {
+    tags = ["T","ST","M","SD","D","SPD","S"];
+    let rootNote = tonalidad.value;
+    // 1. Find the index of the root note in the chromatic scale
+    const rootIndex = americano.indexOf(rootNote);
+    if (rootIndex === -1) throw new Error(`Note "${rootNote}" not found in chromatic scale`);
+    // 2. Rotate the chromatic scale so it starts on the root note
+    americano = [
+    ...americano.slice(rootIndex),
+    ...americano.slice(0, rootIndex)
+    ];
+    latin = [
+    ...latin.slice(rootIndex),
+    ...latin.slice(0, rootIndex)
+    ];
+    // 3. Build the formatted tags array:
+    //    - "" for sharp positions, next tag for natural note positions
+    let tagIndex = 0;
+    const formattedTags = americano.map((note) => {
+    if (note.includes("#")) {
+        return "";               // Sharp position → empty slot
+    } else {
+        return tags[tagIndex++]; // Natural note → assign next tag
+    }
+    });
+
+    // 4. Repeat for 3 octaves
+    tags = [...formattedTags, ...formattedTags, ...formattedTags];
+    selectTone();
+    console.log(rootNote);
+    [...document.querySelectorAll(`button[id^="${rootNote}"]`)]
+    .filter(btn => rootNote.includes("#") || !btn.id.includes("#"))
+    .forEach(button => {
+        Object.assign(button.style, {
+            transform: "scale(1.3)",
+            fontSize: "20px",
+        });
+        button.parentElement.style.height = "calc(var(--distance-between-circles) * 1.4) !important";
+    });
+});
+const progression = document.querySelector("#progression");
+progression.addEventListener("click", async () => {
+    progression.disabled = true;
+    progression.textContent = "Progresionando";
+    const amount = document.querySelector("select[name='progression-notes']");
+    const tonic = document.querySelector("select[name='tonalidad']").value;
+    const tonicButtons = [...document.querySelectorAll(`button[id^="${tonic}"]`)]
+        .filter(btn => tonic.includes("#") || !btn.id.includes("#"));
+    await delay(1000);
+    for(let i = 0; i < amount.value; i++) {
+        if (i == amount.value - 1) {
+            buttonChosen = tonicButtons[Math.floor(Math.random() * tonicButtons.length)];
+        } else {
+            const index = Math.floor(Math.random() * notes_tonalidad.length);
+            buttonChosen = document.querySelector(`button[id="${notes_tonalidad[index]}"]`);
+        }
+        buttonChosen.dispatchEvent(new Event('click'));
+        buttonChosen.classList.add("active");
+        await delay(document.querySelector("select[name='dificulty']").value);
+        buttonChosen.classList.remove("active");
+    }
+    progression.disabled = false;
+    progression.textContent = "Progresión";
+});
+
+
+notation.dispatchEvent(new Event('change'));
+tonalidad.dispatchEvent(new Event('change'));
+octava.dispatchEvent(new Event('change'));
+
+
+document.querySelector("input[name='see-notes']").addEventListener("change", () => {
+    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
 })
 document.querySelector("select[name='notation']").addEventListener("change", () => {
-    selectTone();
+    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
 })
+
+document.querySelector("#tonalidad-random").addEventListener("click", ()=> selectRandomOption(document.querySelector("select[name='tonalidad']")));
+document.querySelector("#octava-random").addEventListener("click", ()=> selectRandomOption(document.querySelector("select[name='octava']")));
