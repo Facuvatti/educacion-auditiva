@@ -4,59 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="toggle-switch.css">
     <title>Educación auditiva</title>
 </head>
 <body>
-    <div style="display:flex;">
-        <label for="tonalidad">Tonalidad</label>
-        <select name="tonalidad">
-            <option>Tonalidad</option>
-        </select>
-        <button>Random</button>
-        <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-        <input name="tonalidad-random-await" type="text" value="" placeholder="X" size="1">
-        <p style="flex-direction: row; margin: 12px">progresiones</p>
-        <div>
-            <label for="hide-tonalidad">Adivinar</label>
-            <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
-        </div>
-    </div>
-    <div>
-        <label for="octava">Octava</label>
-        <select name="octava">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <button>Random</button>
-        <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-        <input name="octava-random-await" type="text" value="" placeholder="X" size="1">
-        <p style="flex-direction: row; margin: 12px">progresiones</p>
-        <div>
-            <label for="hide-tonalidad">Adivinar</label>
-            <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
-        </div>
-    </div>
-    <div>
-        <label for="notation">Notación</label>
-        <select name="notation">
-            <option>Americana</option>
-            <option>Latina</option>
-        </select>
-    </div>
     <ul id="notas">
     </ul>
-    <div>
-        <button id="progression">Progresión</button>
-        <select name = "progression-notes">
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
+    <aside>
+        <label id="theme-toggle">
+            <span class="switch"></span>
+            <span id="theme-label">🌙 Modo oscuro</span>
+        </label>
+        <div>
+            <label for="tonalidad">Tonalidad</label>
+            <select name="tonalidad">
+                <option>Tonalidad</option>
+            </select>
+            <button>Random</button>
+            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
+            <input name="tonalidad-random-await" type="text" value="" placeholder="X" size="1">
+            <p style="flex-direction: row; margin: 12px">progresiones</p>
+            <div>
+                <label for="hide-tonalidad">Adivinar</label>
+                <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
+            </div>
+        </div>
+        <div>
+            <label for="octava">Octava</label>
+            <select name="octava">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </select>
+            <button>Random</button>
+            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
+            <input name="octava-random-await" type="text" value="" placeholder="X" size="1">
+            <p style="flex-direction: row; margin: 12px">progresiones</p>
+            <div>
+                <label for="hide-tonalidad">Adivinar</label>
+                <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
+            </div>
+        </div>
+        <div>
+            <label for="notation">Notación</label>
+            <select name="notation">
+                <option>Americana</option>
+                <option>Latina</option>
+            </select>
+            <label for="see-notes">Ver notas</label>
+            <input name="see-notes" type="checkbox" >
+        </div>
+
+        <div>
+            <button id="progression">Progresión</button>
+            <select name = "progression-notes">
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
             <label for="hide-progression">Adivinar</label>
-            <input type="checkbox" name="hide-progression" id="hide-progression">
-    </div>
+            <input type="checkbox" name="hide-progression" id="hide-progression" style="margin-right: 12px;">
+            <label for="dificulty">Dificultad</label>
+            <select name="dificulty">
+                <option value="3000">Fácil (3 segundos)</option>
+                <option value="2000" selected>Intermedio (2 segundos)</option>
+                <option value="1000">Difícil (1 segundo)</option>
+            </select>
+        </div>
+    </aside>
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
     <script src="main.js"></script>
 </body>

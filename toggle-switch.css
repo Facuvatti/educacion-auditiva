@@ -1,0 +1,42 @@
+/* Toggle switch */
+#theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+#theme-toggle .switch {
+    width: 44px;
+    height: 24px;
+    background: var(--toggle-bg);
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+#theme-toggle .switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--toggle-knob);
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s ease;
+}
+
+/* :root[data-theme="dark"] #theme-toggle .switch,
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) #theme-toggle .switch::after {
+        transform: translateX(20px);
+    }
+} */
+
+:root[data-theme="dark"] #theme-toggle .switch::after {
+    transform: translateX(20px);
+}
