@@ -8,77 +8,118 @@
     <title>Educación auditiva</title>
 </head>
 <body>
-    <ul id="notas">
-    </ul>
-    <aside>
+    <header>
+        <h1>🎵 Educación Auditiva</h1>
         <label id="theme-toggle">
             <span class="switch"></span>
             <span id="theme-label">🌙 Modo oscuro</span>
         </label>
-        <div>
-            <label for="tonalidad">Tonalidad</label>
-            <select name="tonalidad">
-                <option>Tonalidad</option>
-            </select>
-            <button id="tonalidad-random">Random</button>
-            <div>
+    </header>
+
+    <ul id="notas"></ul>
+
+    <aside>
+
+        <!-- ── Tonalidad ── -->
+        <div class="control-section">
+            <span class="section-title">Tonalidad</span>
+            <div class="control-row">
+                <label for="tonalidad">Clave</label>
+                <select name="tonalidad" id="tonalidad">
+                    <option>Tonalidad</option>
+                </select>
+            </div>
+            <div class="control-aux">
+                <button id="tonalidad-random" class="btn-random">Random</button>
                 <label for="hide-tonalidad">Adivinar</label>
                 <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
             </div>
-        </div>
-        <div>
-            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-            <input name="tonalidad-random-await" type="text" value="" placeholder="X" size="1">
-            <p style="flex-direction: row; margin: 12px">progresiones</p>
-        </div>
-        <div>
-            <label for="octava">Octava</label>
-            <select name="octava">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3" selected>3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-            </select>
-            <button id="octava-random">Random</button>
-            <div>
-                <label for="hide-tonalidad">Adivinar</label>
-                <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
+            <div class="control-sub">
+                <p>Cambiar cada</p>
+                <input name="tonalidad-random-await" type="text" value="" placeholder="X">
+                <p>progresiones</p>
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                    <input type="checkbox" name="confirm">
+                </label>
             </div>
-        </div>
-        <div>
-            <p style="flex-direction: row; margin-right: 12px">Cambiar cada</p>
-            <input name="octava-random-await" type="text" value="" placeholder="X" size="1">
-            <p style="flex-direction: row; margin: 12px">progresiones</p>
-        </div>
-        <div>
-            <label for="notation">Notación</label>
-            <select name="notation">
-                <option>Americana</option>
-                <option>Latina</option>
-            </select>
-            <label for="see-notes">Ver notas</label>
-            <input name="see-notes" type="checkbox" >
         </div>
 
-        <div>
-            <button id="progression">Progresión</button>
-            <select name = "progression-notes">
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <label for="hide-progression">Adivinar</label>
-            <input type="checkbox" name="hide-progression" id="hide-progression">
+        <!-- ── Octava ── -->
+        <div class="control-section">
+            <span class="section-title">Octava</span>
+            <div class="control-row">
+                <label for="octava">Octava</label>
+                <select name="octava" id="octava">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+            <div class="control-aux">
+                <button id="octava-random" class="btn-random">Random</button>
+                <label for="hide-octava">Adivinar</label>
+                <input type="checkbox" name="hide-octava" id="hide-octava">
+            </div>
+            <div class="control-sub">
+                <p>Cambiar cada</p>
+                <input name="octava-random-await" type="text" value="" placeholder="X">
+                <p>progresiones</p>
+                <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                    <input type="checkbox" name="confirm">
+                </label>
+            </div>
         </div>
-        <label for="dificulty">Dificultad</label>
-        <select name="dificulty">
-            <option value="3000">Fácil (3 segundos)</option>
-            <option value="2000" selected>Intermedio (2 segundos)</option>
-            <option value="1000">Difícil (1 segundo)</option>
-        </select>
+
+        <!-- ── Notación ── -->
+        <div class="control-section">
+            <span class="section-title">Notación</span>
+            <div class="control-row">
+                <label for="notation">Sistema</label>
+                <select name="notation" id="notation">
+                    <option>Americana</option>
+                    <option>Latina</option>
+                </select>
+            </div>
+            <div class="control-aux">
+                <label for="see-notes">Ver notas</label>
+                <input name="see-notes" id="see-notes" type="checkbox">
+            </div>
+        </div>
+
+        <!-- ── Progresión ── -->
+        <div class="control-section">
+            <span class="section-title">Progresión</span>
+            <div class="control-row">
+                <button id="progression">▶ Progresión</button>
+                <select name="progression-notes">
+                    <option value="4">4 notas</option>
+                    <option value="5">5 notas</option>
+                </select>
+            </div>
+            <div class="control-aux">
+                <label for="hide-progression">Adivinar</label>
+                <input type="checkbox" name="hide-progression" id="hide-progression">
+            </div>
+        </div>
+
+        <!-- ── Dificultad ── -->
+        <div class="control-section">
+            <span class="section-title">Dificultad</span>
+            <div class="control-row">
+                <select name="dificulty">
+                    <option value="3000">Fácil — 3 seg</option>
+                    <option value="2000" selected>Intermedio — 2 seg</option>
+                    <option value="1000">Difícil — 1 seg</option>
+                </select>
+            </div>
+        </div>
+
     </aside>
+
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
     <script src="main.js"></script>
     <script src="darkmode.js"></script>

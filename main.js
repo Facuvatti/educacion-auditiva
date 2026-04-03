@@ -19,7 +19,7 @@ function selectTone(){
         for(let i = 0; i < 12; i++) {
             let note = `${americano[i]}${parseInt(octava.value) + oct}`;
             notes_tonalidad.push(note);
-            let note1 = `${americano[i]}${parseInt(octava.value) + oct}`;
+            let note1 = `${latin[i]}${parseInt(octava.value) + oct}`;
             latinNotation.push(note1);
         }
         
@@ -28,9 +28,11 @@ function selectTone(){
         let nota = notes_tonalidad[i]
         let li = document.createElement("li");
         let btn = document.createElement("button");
-        if(document.querySelector("input[name='see-notes']").checked){ 
+        if(document.querySelector("input[name='see-notes']").checked && !document.querySelector("input[name='hide-tonalidad']").checked) {
+            console.log(document.querySelector("select[name='notation']").value == "Latina");
             if(document.querySelector("select[name='notation']").value == "Latina") btn.textContent = latinNotation[i];
             else btn.textContent = notes_tonalidad[i];
+            if(document.querySelector("input[name='hide-octava']").checked) btn.textContent = btn.textContent.slice(0,-1);
         }
         else btn.textContent = tags[i];
         btn.addEventListener("click", () => {
@@ -44,6 +46,12 @@ function selectTone(){
         ul.append(li);
     }
     document.querySelector("#notas").replaceWith(ul);
+}
+function hide(selector,checkbox) {
+    const element = document.querySelector(selector);
+    const parent = element.parentElement;
+   if(checkbox.checked) parent.style.display = 'none';
+   else parent.style.display = 'flex';
 }
 async function unlockAudio() {
   if (audioContext.state === 'suspended') {
@@ -97,10 +105,10 @@ notation.addEventListener("change", () => {
 const tonalidad = document.querySelector("select[name='tonalidad']");
 tonalidad.addEventListener("change", () => {
     tags = ["T","ST","M","SD","D","SPD","S"];
-    let rootNote = tonalidad.value;
+    let tonic = tonalidad.value;
     // 1. Find the index of the root note in the chromatic scale
-    const rootIndex = americano.indexOf(rootNote);
-    if (rootIndex === -1) throw new Error(`Note "${rootNote}" not found in chromatic scale`);
+    const rootIndex = americano.indexOf(tonic);
+    if (rootIndex === -1) throw new Error(`Note "${tonic}" not found in chromatic scale`);
     // 2. Rotate the chromatic scale so it starts on the root note
     americano = [
     ...americano.slice(rootIndex),
@@ -124,9 +132,8 @@ tonalidad.addEventListener("change", () => {
     // 4. Repeat for 3 octaves
     tags = [...formattedTags, ...formattedTags, ...formattedTags];
     selectTone();
-    console.log(rootNote);
-    [...document.querySelectorAll(`button[id^="${rootNote}"]`)]
-    .filter(btn => rootNote.includes("#") || !btn.id.includes("#"))
+    [...document.querySelectorAll(`button[id^="${tonic}"]`)]
+    .filter(btn => tonic.includes("#") || !btn.id.includes("#"))
     .forEach(button => {
         Object.assign(button.style, {
             transform: "scale(1.3)",
@@ -165,9 +172,15 @@ notation.dispatchEvent(new Event('change'));
 tonalidad.dispatchEvent(new Event('change'));
 octava.dispatchEvent(new Event('change'));
 
-
-document.querySelector("input[name='see-notes']").addEventListener("change", () => {
-    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
+const seeNotes = document.querySelector("input[name='see-notes']");
+seeNotes.addEventListener("change", () => {
+    if(!document.querySelector("input[name='hide-tonalidad']").checked) {
+        document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
+    }
+    else {
+        seeNotes.checked = false;
+        seeNotes.disabled = true;
+    }
 })
 document.querySelector("select[name='notation']").addEventListener("change", () => {
     document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
@@ -175,3 +188,16 @@ document.querySelector("select[name='notation']").addEventListener("change", () 
 
 document.querySelector("#tonalidad-random").addEventListener("click", ()=> selectRandomOption(document.querySelector("select[name='tonalidad']")));
 document.querySelector("#octava-random").addEventListener("click", ()=> selectRandomOption(document.querySelector("select[name='octava']")));
+
+const hideTonalidad = document.querySelector("input[name='hide-tonalidad']")
+hideTonalidad.addEventListener("change", () => {
+    hide("select[name='tonalidad']",hideTonalidad);
+    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
+    seeNotes.checked = false;
+    if(!hideTonalidad.checked) seeNotes.disabled = false;
+});
+const hideOctava = document.querySelector("input[name='hide-octava']")
+hideOctava.addEventListener("change", () => {
+    hide("select[name='octava']",hideOctava)
+    document.querySelector("select[name='tonalidad']").dispatchEvent(new Event('change'));
+});

@@ -1,143 +1,204 @@
+/* ═══════════════════════════════════════════
+   TOKENS & VARIABLES
+═══════════════════════════════════════════ */
 :root {
-    --circle-size: 40px;
-    --tiny-circle-size: 30px;
-    --distance-between-circles: 45px;
+    --circle-size: clamp(18px, 3dvh, 38px);
+    --tiny-circle-size: clamp(13px, 2.2dvh, 28px);
+    --distance-between-circles: 45px; /* compatibilidad con JS — no afecta el layout CSS */
+
+    /* Brand */
+    --accent:            #e07b00;
+    --accent-dark:       #a34802;
+    --accent-subtle:     #fff3e0;
+
+    --blue:              #2563eb;
+    --blue-hover:        #1d4ed8;
+    --blue-subtle:       #eff6ff;
 
     /* Light mode */
-    --bg-body:               #f5f0e8;
-    --bg-notas:              #fdf8ef;
-    --border-notas:          #d6c9b0;
-    --color-text:            #222;
-    --color-select-bg:       white;
-    --color-select-border:   #ccc;
-    --color-btn-bg:          white;
-    --btn-note:              #ff8800;
-    --btn-note-active:       #a34802;
-    --btn-progression:       #4a90d9;
-    --btn-progression-hover: #2f72b8;
+    --bg-body:           #f4f1eb;
+    --bg-surface:        #fdfaf4;
+    --bg-surface-2:      #f7f2e8;
+    --border:            #ddd4c0;
+    --border-strong:     #c8b99a;
+    --text:              #1c1917;
+    --text-muted:        #6b5e4e;
+    --text-subtle:       #a0907e;
+    --select-bg:         #ffffff;
+    --btn-bg:            #ffffff;
+    --btn-note:          #e07b00;
+    --btn-note-active:   #a34802;
+    --shadow-sm:         0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md:         0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+    --radius-sm:         6px;
+    --radius-md:         10px;
+    --radius-lg:         14px;
+    --transition:        0.25s ease;
 }
 
-/* Modo oscuro automático (sistema) */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-        --bg-body:               #1a1a1a;
-        --bg-notas:              #2a2a2a;
-        --border-notas:          #444;
-        --color-text:            #f0e6d3;
-        --color-select-bg:       #333;
-        --color-select-border:   #555;
-        --color-btn-bg:          #333;
-        --btn-note:              #cc6e00;
-        --btn-note-active:       #a34802;
-        --btn-progression:       #2f72b8;
-        --btn-progression-hover: #1a5490;
+        --bg-body:       #141210;
+        --bg-surface:    #1f1c18;
+        --bg-surface-2:  #2a2520;
+        --border:        #3d3630;
+        --border-strong: #4f4640;
+        --text:          #f0e9de;
+        --text-muted:    #a89880;
+        --text-subtle:   #706050;
+        --select-bg:     #2a2520;
+        --btn-bg:        #2a2520;
+        --btn-note:      #cc6e00;
+        --accent:        #cc6e00;
+        --accent-subtle: #2d1f0a;
+        --blue:          #3b82f6;
+        --blue-hover:    #2563eb;
+        --blue-subtle:   #0f1f3d;
+        --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
+        --shadow-md:     0 4px 6px rgba(0,0,0,0.3);
     }
 }
 
-/* Modo oscuro forzado por botón */
 :root[data-theme="dark"] {
-    --bg-body:               #1a1a1a;
-    --bg-notas:              #2a2a2a;
-    --border-notas:          #444;
-    --color-text:            #f0e6d3;
-    --color-select-bg:       #333;
-    --color-select-border:   #555;
-    --color-btn-bg:          #333;
-    --btn-note:              #cc6e00;
-    --btn-note-active:       #a34802;
-    --btn-progression:       #2f72b8;
-    --btn-progression-hover: #1a5490;
+    --bg-body:       #141210;
+    --bg-surface:    #1f1c18;
+    --bg-surface-2:  #2a2520;
+    --border:        #3d3630;
+    --border-strong: #4f4640;
+    --text:          #f0e9de;
+    --text-muted:    #a89880;
+    --text-subtle:   #706050;
+    --select-bg:     #2a2520;
+    --btn-bg:        #2a2520;
+    --btn-note:      #cc6e00;
+    --accent:        #cc6e00;
+    --accent-subtle: #2d1f0a;
+    --blue:          #3b82f6;
+    --blue-hover:    #2563eb;
+    --blue-subtle:   #0f1f3d;
+    --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md:     0 4px 6px rgba(0,0,0,0.3);
 }
 
-* {
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
+/* ═══════════════════════════════════════════
+   BODY & LAYOUT
+═══════════════════════════════════════════ */
+html, body {
+    height: 100%;
 }
 
 body {
-    font-family: sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
     background: var(--bg-body);
-    color: var(--color-text);
-    padding: 20px;
+    color: var(--text);
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "notas  aside";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;  /* header toma lo que necesita, fila inferior toma el resto */
+    height: 100dvh;                /* dynamic viewport height: descuenta la barra del navegador móvil */
+    overflow: hidden;
+    gap: 0;
+    transition: background var(--transition), color var(--transition);
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+header {
+    grid-area: header;
     display: flex;
-    flex-direction: row;
-    gap: 16px;
-    transition: background 0.4s ease, color 0.4s ease;
-    flex-wrap: wrap;        /* permite que bajen los elementos */
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-button {
-    margin: 10px;
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid var(--color-select-border);
-    background: var(--color-btn-bg);
-    color: var(--color-text);
-    cursor: pointer;
-    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+header h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+
 }
 
-input::placeholder {
-    text-align: center;
-}
-
-label {
-    font-weight: bold;
-    margin-right: 4px;
-}
-
-select {
-    margin-right: 12px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: 1px solid var(--color-select-border);
-    background: var(--color-select-bg);
-    color: var(--color-text);
-    cursor: pointer;
-    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
-}
-
+/* ═══════════════════════════════════════════
+   #NOTAS — PIANO KEY LIST
+═══════════════════════════════════════════ */
 #notas {
+    grid-area: notas;
+    margin: 12px 0 12px 16px;
     list-style: none;
+
+    /* Flexbox vertical inverso: distribuye los li en el espacio disponible */
     display: flex;
     flex-direction: column-reverse;
+
+    /* Ocupa exactamente la fila disponible bajo el header */
+    align-self: stretch;
+    min-height: 0;          /* permite que flex la comprima si es necesario */
+
     position: relative;
-    background-color: var(--bg-notas);
-    border-radius: 12px;
-    border: 1px solid var(--border-notas);
-    padding: 16px 0;
-    width: 220px;
-    transition: background 0.4s ease, border-color 0.4s ease;
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    padding: 8px 0;
+    width: 150px;
     flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: background var(--transition), border-color var(--transition);
 }
 
 #notas::before {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-radius: 12px;
+    inset: 0;
+    border-radius: var(--radius-lg);
     z-index: 0;
 }
 
+/*
+ * li naturales (sin #): se reparten el espacio restante en proporciones iguales.
+ * Hay 21 li naturales en 3 octavas → cada uno toma ~1/21 del alto disponible.
+ */
 #notas > li {
-    height: var(--distance-between-circles);
+    flex: 1 1 0;
+    min-height: 0;
     display: flex;
     align-items: center;
     position: relative;
     z-index: 1;
 }
 
-/* ── Botón base ── */
+/*
+ * li sostenidos (con #): muy finos, no crecen.
+ * flex: 0 0 0 → no consumen espacio; se usan solo como separador visual.
+ */
+#notas > li[id*="#"] {
+    flex: 0 0 0px;
+    overflow: visible;  /* el botón pequeño sobresale sin empujar layout */
+}
+
+/* ── Botón base (notas naturales) ── */
 #notas > li > button {
     width: var(--circle-size);
     height: var(--circle-size);
@@ -148,16 +209,33 @@ select {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    font-size: clamp(9px, 1.4vh, 15px);
     font-weight: bold;
     cursor: pointer;
     position: absolute;
+    left: 20px;
     z-index: 2;
     user-select: none;
     transition:
         background-color 0.33s ease,
-        transform 0.33s ease,
         box-shadow 0.33s ease;
+}
+#notas > li[id*="#"] {
+    flex: 0 0 0px;
+    overflow: visible;
+    z-index: 3;
+}
+/* ── Botón sostenido ── */
+#notas > li[id*="#"] > button {
+    left: 80px;
+    width: var(--tiny-circle-size);
+    height: var(--tiny-circle-size);
+    font-size: clamp(8px, 1.2vh, 13px);
+    /* centrado: margin-top negativo de la mitad del propio alto */
+    top: 0;
+    margin-top: calc(var(--tiny-circle-size) / -2);
+    /* sin transform: elimina el desplazamiento y fix de hitbox */
+    transition: background-color 0.33s ease, box-shadow 0.33s ease;
 }
 
 button.active {
@@ -166,32 +244,276 @@ button.active {
     box-shadow: inset 0 3px 8px rgba(255, 0, 0, 0.35);
 }
 
-/* Notas naturales: columna izquierda */
-#notas > li > button { left: 20px; }
-
-/* Sostenidos: columna derecha */
-#notas > li[id*="#"] > button {
-    left: 80px;
-    width: var(--tiny-circle-size);
-    height: var(--tiny-circle-size);
-    font-size: 15px;
-}
-
-#notas > li[id*="#"] {
-    height: calc(var(--distance-between-circles) * 0.1);
-}
-
-button#progression {
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    background: var(--btn-progression);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-button#progression:hover { background: var(--btn-progression-hover); }
-
 #notas > li > button:hover { filter: brightness(1.6); }
+/* Tónicas: el JS aplica scale(1.3) inline; nos aseguramos de que
+   el texto siga centrado independientemente de la escala */
+#notas > li > button {
+    transform-origin: center center;
+    text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   ASIDE — PANEL DE CONTROLES
+═══════════════════════════════════════════ */
+aside {
+    grid-area: aside;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: stretch;
+    overflow-y: auto;       /* scroll interno si el contenido no entra */
+}
+
+/* ── Sección / Card ── */
+.control-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: background var(--transition), border-color var(--transition);
+}
+
+.section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-subtle);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ── Fila de control ── */
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.control-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 60px;
+}
+
+/* ── Fila auxiliar (Random + Adivinar) separada visualmente ── */
+.control-aux {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    background: var(--bg-surface-2);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--border);
+}
+
+.control-aux label {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* ── Sub-fila inline (cambiar cada X progresiones) — siempre horizontal ── */
+.control-sub {
+    display: flex;
+    flex-direction: row;    /* explícito, nunca column */
+    flex-wrap: nowrap;      /* nunca rompe en dos líneas */
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 4px;
+}
+
+.control-sub p {
+    margin: 0;
+    white-space: nowrap;    /* el texto no se parte */
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   FORM ELEMENTS
+═══════════════════════════════════════════ */
+select {
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--select-bg);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+    outline: none;
+    min-width: 0;
+}
+
+select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+input[type="text"] {
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--select-bg);
+    color: var(--text);
+    font-size: 13px;
+    text-align: center;
+    width: 40px;
+    transition: border-color var(--transition);
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+input[type="text"]::placeholder {
+    text-align: center;
+    color: var(--text-subtle);
+}
+
+input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+button {
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--btn-bg);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        transform 0.1s ease;
+    white-space: nowrap;
+}
+
+button:hover {
+    background: var(--bg-surface-2);
+    border-color: var(--border-strong);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* Botón Random — sutil accent */
+button.btn-random {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+button.btn-random:hover {
+    background: var(--accent-subtle);
+}
+
+/* Botón Progresión — primario */
+button#progression {
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--blue);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.2s, transform 0.1s;
+}
+
+button#progression:hover  { background: var(--blue-hover); }
+button#progression:active { transform: scale(0.97); }
+
+/* ═══════════════════════════════════════════
+   LABEL THEME TOGGLE (en header)
+═══════════════════════════════════════════ */
+#theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    user-select: none;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — pantallas muy pequeñas
+═══════════════════════════════════════════ */
+@media (max-width: 380px) {
+    #notas {
+        margin-left: 10px;
+        width: 130px;
+    }
+
+    aside {
+        padding: 16px 10px;
+    }
+
+    .control-section {
+        padding: 10px;
+    }
+}
+
+/* ── Checkbox custom ── */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    background: var(--select-bg);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: background var(--transition), border-color var(--transition);
+}
+
+input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
