@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="toggle-switch.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">   
     <title>Educación auditiva</title>
 </head>
 <body>
@@ -16,61 +17,63 @@
         </label>
     </header>
 
-    <ul id="notas"></ul>
+    <ul id="notes"></ul>
 
     <aside>
 
-        <!-- ── Tonalidad ── -->
+        <!-- ── tonality ── -->
         <div class="control-section">
             <span class="section-title">Tonalidad</span>
             <div class="control-row">
-                <label for="tonalidad">Clave</label>
-                <select name="tonalidad" id="tonalidad">
+                <label for="tonality">Clave</label>
+                <select name="tonality" id="tonality">
                     <option>Tonalidad</option>
                 </select>
             </div>
             <div class="control-aux">
-                <button id="tonalidad-random" class="btn-random">Random</button>
-                <label for="hide-tonalidad">Adivinar</label>
-                <input type="checkbox" name="hide-tonalidad" id="hide-tonalidad">
+                <button  id="tonality-random" class="btn-random" >Random</button>
+                <label for="hide-tonality">Adivinar</label>
+                <input type="checkbox" name="hide-tonality" id="hide-tonality" >
             </div>
             <div class="control-sub">
                 <p>Cambiar cada</p>
-                <input name="tonalidad-random-await" type="text" value="" placeholder="X">
+                <input name="tonality-random-await" type="text" value="" placeholder="X" disabled>
                 <p>progresiones</p>
                 <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                    <input type="checkbox" name="confirm">
+                    <input type="checkbox" name="confirm" disabled>
                 </label>
+                <p style="color:red; font-weight:600;">PROXIMAMENTE FUNCIONANDO</p>
             </div>
         </div>
 
-        <!-- ── Octava ── -->
+        <!-- ── octave ── -->
         <div class="control-section">
             <span class="section-title">Octava</span>
             <div class="control-row">
-                <label for="octava">Octava</label>
-                <select name="octava" id="octava">
+                <label for="octave">Octava</label>
+                <select name="octave" id="octave">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3" selected>3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
                     <option value="6">6</option>
-                    <option value="7">7</option>
+                    <!-- <option value="7">7</option> -->
                 </select>
             </div>
             <div class="control-aux">
-                <button id="octava-random" class="btn-random">Random</button>
-                <label for="hide-octava">Adivinar</label>
-                <input type="checkbox" name="hide-octava" id="hide-octava">
+                <button id="octave-random" class="btn-random">Random</button>
+                <label for="hide-octave">Adivinar</label>
+                <input type="checkbox" name="hide-octave" id="hide-octave">
             </div>
             <div class="control-sub">
                 <p>Cambiar cada</p>
-                <input name="octava-random-await" type="text" value="" placeholder="X">
+                <input name="octave-random-await" type="text" value="" placeholder="X" disabled>
                 <p>progresiones</p>
                 <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
-                    <input type="checkbox" name="confirm">
+                    <input type="checkbox" name="confirm" disabled>
                 </label>
+                <p style="color:red; font-weight:600;">PROXIMAMENTE FUNCIONANDO</p>
             </div>
         </div>
 
@@ -94,27 +97,39 @@
         <div class="control-section">
             <span class="section-title">Progresión</span>
             <div class="control-row">
-                <button id="progression">▶ Progresión</button>
+                <button id="progression">▶</button>
                 <select name="progression-notes">
-                    <option value="4">4 notas</option>
-                    <option value="5">5 notas</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                 </select>
+                <button style="padding: 5px" id="repeat">Repetir</button>
+                <button id="save-history"><i class="fas fa-save"></i></button>
             </div>
             <div class="control-aux">
                 <label for="hide-progression">Adivinar</label>
                 <input type="checkbox" name="hide-progression" id="hide-progression">
             </div>
         </div>
-
+        <div class="control-section">
+            <span class="section-title">Historial</span>
+            <div class="control-row">
+                
+                <div class="history">
+                    <input name="history-date" type="date">
+                    <!-- <input name="history-time" type="time">   -->
+                    <select name="history">
+                    </select>  
+                    <button id="play-history">▶</button>
+                    <button id="clear-history">🗑</button>
+                </div>
+            </div>
+        </div>
         <!-- ── Dificultad ── -->
         <div class="control-section">
-            <span class="section-title">Dificultad</span>
+            <span class="section-title">Velocidad</span>
             <div class="control-row">
-                <select name="dificulty">
-                    <option value="3000">Fácil — 3 seg</option>
-                    <option value="2000" selected>Intermedio — 2 seg</option>
-                    <option value="1000">Difícil — 1 seg</option>
-                </select>
+                <input type="range" name="speed" min="250" max="3000" step="250" value="1000">
+                <p id="speed"></p>
             </div>
         </div>
 
