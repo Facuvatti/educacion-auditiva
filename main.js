@@ -118,7 +118,21 @@ function getTonality(tonic, scale, latin = false) {
     
     return result;
 }
+const playButtons = () => [
+    document.querySelector("#progression"),
+    document.querySelector("#repeat"),
+    document.querySelector("#play-history"),
+];
+
+function lockPlayButtons() {
+    playButtons().forEach(btn => btn.disabled = true);
+}
+
+function unlockPlayButtons() {
+    playButtons().forEach(btn => btn.disabled = false);
+}
 async function playProgression(notes) {
+    lockPlayButtons();
     const speed = document.querySelector("input[name='speed']");
     const hideProgression = document.querySelector("input[name='hide-progression']");
     for (let i = 0; i < notes.length; i++) {
@@ -131,6 +145,7 @@ async function playProgression(notes) {
         await delay(speed.value);
         buttonChosen.classList.remove("active");
     }
+    unlockPlayButtons();
 }
 function dateIdentifier() {
     const now = new Date();
@@ -139,11 +154,16 @@ function dateIdentifier() {
     return datetime;
 }
 function saveProgression(progression) {
-    const identifier = dateIdentifier();
     const history = JSON.parse(localStorage.getItem("history")) || {};
+    
+    const alreadyExists = Object.values(history).some(
+        saved => JSON.stringify(saved) === JSON.stringify(progression)
+    );
+    if (alreadyExists) return;
+
+    const identifier = dateIdentifier();
     history[identifier] = progression;
     localStorage.setItem("history", JSON.stringify(history));
-    console.log(history);
 }
 function getHistory(prefix) {
     const history = JSON.parse(localStorage.getItem("history")) || {};
@@ -156,7 +176,7 @@ function getHistory(prefix) {
 }
 function makeOptions(options, select) {
     select.innerHTML = options.map(item => {
-        return `<option value="${Object.values(item)[1]}">${Object.values(item)[0]}</option>`
+        return `<option value="${item[1]}">${Object.values(item)[0]}</option>`
     }).join('');
 }
 function hide(selector,checkbox) {
@@ -237,7 +257,7 @@ progression.addEventListener("click", async () => {
     savedProgression = [];
     progression.disabled = true;
     progression.textContent = "...";
-    const amount = document.querySelector("select[name='progression-notes']");
+    const amount = document.querySelector("input[name='progression-notes']");
     const tonic = document.querySelector("select[name='tonality']").value;
     const tonicButtons = [...document.querySelectorAll(`button[id^="${tonic}"]`)]
         .filter(btn => tonic.includes("#") || !btn.id.includes("#"));
@@ -255,10 +275,13 @@ progression.addEventListener("click", async () => {
     playProgression(savedProgression);
     progression.disabled = false;
     progression.textContent = "▶";
+    document.querySelector("#save-history").disabled = false;
+    document.querySelector("#repeat").disabled = false;
 });
 document.querySelector("#save-history").addEventListener("click", () => {
     saveProgression(savedProgression)
-    document.querySelector("select[name='history']").dispatchEvent(new Event('change'));
+    document.querySelector("#save-history").disabled = true;
+    document.querySelector("input[name='history-date']").dispatchEvent(new Event('change'));
 });
 
 notation.dispatchEvent(new Event('change'));
@@ -306,13 +329,15 @@ historyDate.value = new Date().toLocaleDateString('en-CA').split(', ')[0];
 
 historyDate.addEventListener("change", () => {
     const listOfProgressions = getHistory(historyDate.value);
-    console.log(listOfProgressions)
     makeOptions(listOfProgressions, document.querySelector("select[name='history']"));
 });
 historyDate.dispatchEvent(new Event('change'));
 const historySelect = document.querySelector("select[name='history']");
 const playHistory = document.querySelector("#play-history");
-playHistory.addEventListener("click", () => playProgression(historySelect.value));
+playHistory.addEventListener("click", () => {
+    console.log(historySelect.value);
+    playProgression(historySelect.value.split(','))
+});
 
 const repeat = document.getElementById("repeat");
 repeat.addEventListener("click", () => playProgression(savedProgression));

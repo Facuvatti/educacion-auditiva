@@ -609,3 +609,29 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
 :root[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(1);          /* dark mode: ícono claro */
 }
+
+input[type="number"] {
+    width: 42px;
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--select-bg);
+    color: var(--text);
+    font-size: 12px;
+    text-align: center;
+    outline: none;
+    transition: border-color var(--transition);
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: auto;
+    opacity: 1;
+    cursor: pointer;
+}
+
+input[type="number"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}

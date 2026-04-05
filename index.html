@@ -98,12 +98,9 @@
             <span class="section-title">Progresión</span>
             <div class="control-row">
                 <button id="progression">▶</button>
-                <select name="progression-notes">
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                <button style="padding: 5px" id="repeat">Repetir</button>
-                <button id="save-history"><i class="fas fa-save"></i></button>
+                <input type="number" name="progression-notes" value="4">
+                <button style="padding: 5px" id="repeat" disabled>Repetir</button>
+                <button id="save-history" disabled><i class="fas fa-save"></i></button>
             </div>
             <div class="control-aux">
                 <label for="hide-progression">Adivinar</label>
@@ -140,3 +137,9 @@
     <script src="darkmode.js"></script>
 </body>
 </html>
+<!-- Falta agregar que se pueda: 
+ - Borrar una progresión del historial en base a su hora (el select), 
+ - Cambiar la aleatoridad de las progresiones y que sean más realistas en base a las caracteristicas de las funciones tonales
+ - Cambiar cada x progresiones la tonalidad & octava.
+ -->
+ <!-- Mejorar aún más la estetica -->
