@@ -53,18 +53,24 @@ function createNotesbuttons(){
     );
     tonalFunctions = [...tonalFunctions,...tonalFunctions];
 
-
+    
     for(let i = 0; i < notes.length; i++) {
         let note = notes[i][0];
         let li = document.createElement("li");
         let btn = document.createElement("button");
         if(document.querySelector("input[name='see-notes']").checked && !document.querySelector("input[name='hide-tonality']").checked) {
             if(document.querySelector("select[name='notation']").value == "Latina") {
-                if(!latinNotation[i][1]) btn.classList.add("tinyCircle");
+                if(!latinNotation[i][1]) {
+                    if(document.querySelector("input[name='see-tinyCircles']").checked) btn.classList.add("tinyCircle");
+                    else btn.display = "none";
+                }
                 btn.textContent = latinNotation[i][0];
             }
             else {
-                if(!notes[i][1]) btn.classList.add("tinyCircle");
+                if(!notes[i][1]) {
+                    if(document.querySelector("input[name='see-tinyCircles']").checked) btn.classList.add("tinyCircle");
+                    else btn.display = "none";
+                }
                 btn.textContent = notes[i][0];
             }
             if(document.querySelector("input[name='hide-octave']").checked) btn.textContent = btn.textContent.slice(0,-1);
@@ -317,7 +323,18 @@ hideoctave.addEventListener("change", () => {
     hide("select[name='octave']",hideoctave)
     document.querySelector("select[name='tonality']").dispatchEvent(new Event('change'));
 });
-
+document.querySelector("input[name='see-tinyCircles']").addEventListener("change",()=>{
+    if(this.value){ 
+        document.querySelectorAll("#notes > li > button:empty").forEach(element =>{
+            element.classList.add("tinyCircle");
+        })
+        document.querySelectorAll("#notes > li:has(button:empty)").forEach(element =>{
+            element.classList.add("tinyCircleLi");
+        })
+    } else {
+        
+    }
+})
 document.querySelector("#clear-history").addEventListener("click", async() => {
     if(confirm("¿Seguro que querés borrar todo el historial?")){
         await delay(3000);

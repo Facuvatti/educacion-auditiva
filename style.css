@@ -190,8 +190,8 @@ header h1 {
 }
 
 
-#notes > li:has(button:empty), 
-#notes > li:has(button.tinyCircle)  {
+
+#notes > li:has(button.tinyCircle), .tinyCircleLi  {
     flex: 0 0 0px;
     overflow: visible;  /* el botón pequeño sobresale sin empujar layout */
 }
@@ -226,14 +226,12 @@ header h1 {
     padding: 0;                    /* ← elimina cualquier padding que deforme */
     box-sizing: content-box;       /* ← width/height no incluyen border */
 }
-#notes > li:has(button:empty), 
-#notes > li:has(button.tinyCircle) {
+#notes > li:has(button.tinyCircle), .tinyCircleLi {
     flex: 0 0 0px;
     overflow: visible;
     z-index: 3;
 }
 /* ── Botón sostenido ── */
-#notes > li > button:empty,
 #notes > li > button.tinyCircle {
     left: 80px;
     width: var(--tiny-circle-size);
@@ -571,7 +569,10 @@ input[type="datetime-local"] {
 
 :root[data-theme="dark"] input[type="date"],
 :root[data-theme="dark"] input[type="time"],
-:root[data-theme="dark"] input[type="datetime-local"],
+:root[data-theme="dark"] input[type="datetime-local"]{
+    color-scheme: dark;
+    filter: invert(1);
+}
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) input[type="date"],
     :root:not([data-theme="light"]) input[type="time"],
